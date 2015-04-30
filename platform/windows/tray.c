@@ -19,15 +19,37 @@ LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 
 extern void tray_callback(int itemId);
 
+// TODO: Implement.
+void display_notification(int id, const char* title, const char* body, struct image imageData, double duration)
+{
+}
+
+struct image get_clipboard_image()
+{
+  struct image i;  
+  return i;
+}
+
+// TODO: Implement.
+char* get_clipboard_string()
+{
+  return NULL;
+}
+
+// TODO: Implement.
+void set_clipboard_string(const char* cp)
+{
+}
+
 void add_separator_item()
 {
     AppendMenuW(hSubMenu, MF_SEPARATOR, 0, NULL);
 }
 
-void add_menu_item(int id, const char* title, int disabled)
+void add_menu_item(int id, const char* title, int enabled)
 {
     UINT uFlags = MF_STRING;
-    if (disabled == TRUE) {
+    if (!enabled == TRUE) {
         uFlags |= MF_GRAYED;
     }
     AppendMenuW(hSubMenu, uFlags, id, (wchar_t*)title);
@@ -44,7 +66,7 @@ void native_loop()
     }
 }
 
-void init(const char *title, unsigned char *imageData, unsigned int imageDataLen)
+void init_w(const char *title, unsigned char *imageData, unsigned int imageDataLen)
 {
     HWND hWnd;
     HINSTANCE hInstance = GetModuleHandle(NULL);
@@ -114,6 +136,11 @@ void init(const char *title, unsigned char *imageData, unsigned int imageDataLen
     Shell_NotifyIcon(NIM_ADD, &nid);
 
     hSubMenu = CreatePopupMenu();
+}
+
+void init(const char *title, struct image imageData) {
+
+    init_w(title, (unsigned char *)&imageData, sizeof(imageData));
 }
 
 void exit_loop() {
